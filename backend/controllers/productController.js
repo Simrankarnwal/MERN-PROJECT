@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 // function for add product
-const addProduct = async (req, res) => {
+const addProduct = async (req, res) => { 
   try {
     const {
       name,
@@ -9,7 +9,7 @@ const addProduct = async (req, res) => {
       category,
       subCategory,
       sizes,
-      bestSeller,
+      bestSeller, 
     } = req.body;
 
     const image1 = req.files.image1 && req.files.image1[0];
