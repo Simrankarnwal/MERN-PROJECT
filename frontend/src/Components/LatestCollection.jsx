@@ -4,7 +4,7 @@ import Title from "../Components/Title.jsx";
 import ProductItem from "./productItem";
 
 const LatestCollection = () => {
-  const { products } = useContext(ShopContext);
+  const { products } = useContext(ShopContext); 
   console.log(products,"ghfyufgyfyhv")
   const [ latestProduct, setLatestProducts ] = useState([]);
   console.log(latestProduct,"tftydfgcgc")

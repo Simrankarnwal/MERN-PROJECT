@@ -1,6 +1,9 @@
 import { v2 as cloudinary } from "cloudinary";
+import productModel from "../models/productModel.js";
+
+
 // function for add product
-const addProduct = async (req, res) => { 
+const addProduct = async (req, res) => {
   try {
     const {
       name,
@@ -9,7 +12,7 @@ const addProduct = async (req, res) => {
       category,
       subCategory,
       sizes,
-      bestSeller, 
+      bestSeller,
     } = req.body;
 
     const image1 = req.files.image1 && req.files.image1[0];
@@ -20,7 +23,7 @@ const addProduct = async (req, res) => {
     const images = [image1, image2, image3, image4].filter(
       (item) => item !== undefined
     );
-
+    
     let imagesUrl = await Promise.all(
       images.map(async (item) => {
         let result = await cloudinary.uploader.upload(item.path, {
@@ -29,17 +32,23 @@ const addProduct = async (req, res) => {
         return result.secure_url;
       })
     );
-    console.log(
+
+    const productData = {
       name,
       description,
-      price,
       category,
+      price: Number(price),
       subCategory,
-      sizes,
-      bestSeller
-    );
-    console.log(imagesUrl);
-    res.json({});
+      bestSeller: bestSeller === "true" ? true : false,
+      sizes: JSON.parse(sizes),
+      image: imagesUrl,
+      date: Date.now(),
+    };
+    console.log(productData);
+    const product = new productModel(productData);
+    await product.save();
+
+    res.json({ success: true, message: "Product Added" });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
@@ -47,7 +56,7 @@ const addProduct = async (req, res) => {
 };
 
 // function for list Products
-const listProduct = async (req, res) => {};
+const listProducts = async (req, res) => {};
 // function for remove products
 const removeProduct = async (req, res) => {};
 
@@ -55,4 +64,4 @@ const removeProduct = async (req, res) => {};
 
 const singleProduct = async (req, res) => {};
 
-export { addProduct, listProduct, removeProduct, singleProduct };
+export { addProduct, listProducts, removeProduct, singleProduct };

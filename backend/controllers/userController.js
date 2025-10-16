@@ -1,12 +1,12 @@
-
 import validator from "validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import userModel from "../models/userModel.js";
 
 const createToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET);
+  return jwt.sign({ id }, process.env.JWT_SECRET); 
 };
+
 // Route for user Login
 const loginUser = async (req, res) => {
   try {
@@ -16,6 +16,7 @@ const loginUser = async (req, res) => {
       return res.json({success:false,message:"User not found"})
     }
     const  isMatch = await bcrypt.compare(password,user.password)
+    
     if(isMatch){
       const token = createToken(user._id)
       res.json({success:true,token})
@@ -65,6 +66,8 @@ const registerUser = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
+
 // Route for Admin Login
 
 const adminLogin = async (req, res) => {};
